@@ -300,7 +300,7 @@ myFocusFollowsMouse = True
 -- By default, do nothing.
 myStartupHook = do
     spawn "thunderbird"
-    spawn "if [ `ps aux | grep rhythmbox | wc -l = 1 ]; then rhythmbox-client --play-pause fi"
+    spawn "rhythmbox-client --play-pause"
  
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
