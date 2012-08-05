@@ -38,3 +38,5 @@ apt-get install xmobar, set up with xmobarrc to call show_volume script
 apt-get install xloadimage for wallpaper (actually can just use xsetroot for plain background color)
 
 apt-get install clementine (music)
+
+set up ssh keys for git account using this: https://help.github.com/articles/generating-ssh-keys
