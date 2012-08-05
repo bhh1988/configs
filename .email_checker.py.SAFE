@@ -1,0 +1,23 @@
+#!/usr/bin/python
+import imaplib
+# See http://yuji.wordpress.com/2011/06/22/python-imaplib-imap-example-with-gmail/
+# for guide
+
+mail = imaplib.IMAP4_SSL('imap.gmail.com')
+mail.login('<USERID>@gmail.com','<PASSWORD>')
+# connect to inbox
+mail.select("inbox")
+# search for unseen messages ("NEW" doesn't work, probably
+# because the new messages don't have the /recent flag set
+# as specified in RFC3501)
+result, data = mail.search(None, "UNSEEN")
+id_list = data[0].split()
+gmail_new = len(id_list)
+
+mail = imaplib.IMAP4_SSL('<USERID>.pobox.stanford.edu')
+mail.login('<USERID>@stanford.edu','<PASSWORD>')
+mail.select("inbox")
+result, data = mail.search(None, "UNSEEN")
+id_list = data[0].split()
+stanford_new = len(id_list)
+print "Gmail:" + str(gmail_new) + " Stanford:" + str(stanford_new)

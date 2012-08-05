@@ -1,0 +1,40 @@
+install jdk (jre is included in this, so don't download jre). Create a $JAVA_HOME in .profile and add $HOME/bin and $JAVA_HOME/bin to path
+
+Turn <shift><ctrl> into the modifier for grabbing windows. Go into xfce settings and set the easy_click property to be 'Control><Shift'. Total hack.
+
+make ctrl-shift-{c,x,v} into copy cut and paste in firefox (same shortcuts as terminal). This requires modifying platformHTMLBindings.xml inside of omni.ja, which is a jar file. This can be done using just zip and unzip utilities. omni.ja lives in /usr/lib/firefox/omni.ja. Don't unzip it here, because its contents overlap with the names of some other directories in there. COPY omni.ja into some other directory, unzip it, find platformHTMLBindings.xml and change the "accel"s to "accel,shift" for the copy, paste, and cut commands. This required commenting out just one conflicting command, which was the paste-without-formatting command.
+
+
+After that modification, you can modify the original ja file by going back to the directory with the .ja copy and using a command like:
+
+zip omni.ja chrome/toolkit/content/global/platformHTMLBindings.xml
+
+because zip will realize that the path already exists and just replace the file in the .ja.
+
+Copy this new omni.ja back into the /usr/lib/firefox/omni.ja, overwriting the original. After that, try disabling and re-enabling an add-on (restarting firefox) and firefox will then load the new ja.
+
+Firebug and Adblock add-ons conflict with accel,shift v and accel,shift c respectively. Go to about:config, searching for "accel" to see the conflicts and resolve them. I've mapped them to accel,shift w and accel,shift b respectively.
+
+Go to http://mycroft.mozdev.org/ and install the naver dictionary search bar for firefox
+
+Make sure the default file manager is Nautilus and not Thunar, otherwise you can't see any files in on your hard disk if any one of the files throws an error (Korean-named files). Upgrading to xfce 4.10 did this for me.
+
+Make the .xinitrc into .xprofile, because this is what the gdm login manager reads after starting X. (This is based on the assumption that the window manager can be configured to do all the startup stuff the user wants, making xinitrc unnecessary).
+
+in order to open external links in new windows on firefox (e.g. clicking a link in thunderbird message opens a new window in firefox, instead of new tab) then go to firefox's about:config and change the attribute browser.link.open_newwindow.override.external to 2
+
+add .amixer_muter, which effectively toggles the mute (`amixer sset Master toggle` is broken).
+
+NEVER install hfsplus and use hpmount. It breaks the partition and will require repair by something like diskwarrior!
+
+After xmodmap for xmonad/awesome of Alt_L to mod4, ctrl-alt-F# doesn't give virtual terminals, even if we use Alt_R for the alt. This is because the system is looking for the ctrl and alt modifiers AS WELL AS the KEYCODE of Alt_L before switching to virtual terminal. Pressing ctrl, alt_L, F# gives the right keycodes but not the right modifier. Pressing ctrl, alt_R, F# gives the right modifiers, but not the right keycode. The workaround is to press both alt_L and alt_R at the same time, so we generate both the necessary keycode and the correct modifier for virtual terminal! It works! Remember this!
+
+apt-get install powermanagement-interface and hal. Together, this allows you to do "pmi action" commands which allows you to suspend and hibernate the computer without root access!
+
+apt-get install byobu (may have to run byobu-select-backend to change from tmux to screen, in order to be able to change escape keybinding (tmux has a bug))
+
+apt-get install xmobar, set up with xmobarrc to call show_volume script
+
+apt-get install xloadimage for wallpaper (actually can just use xsetroot for plain background color)
+
+apt-get install clementine (music)

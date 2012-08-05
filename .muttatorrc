@@ -1,0 +1,12 @@
+
+imap <C-c> <Esc>
+mmap <C-c> <Esc>
+cmap <C-c> <Esc>
+nmap <C-c> <Esc>
+vmap <C-c> <Esc>
+
+nmap <C-j> <C-n>
+nmap <C-k> <C-p>
+nmap J <gT>
+nmap K <gt>
+nmap <C-t> :tabopen<CR>

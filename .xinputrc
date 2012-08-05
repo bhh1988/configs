@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Grab the id of the trackpoint device.
+trackptID=`xinput list | sed -ne "s/.*Lite-On.*id=\([0-9]*\).*pointer.*/\1/p"`
+
+[ -z "$trackptID" ] && exit
+
+xinput set-int-prop $trackptID "Evdev Wheel Emulation" 8 1
+xinput set-int-prop $trackptID "Evdev Wheel Emulation Button" 8 2
+xinput set-int-prop $trackptID "Evdev Wheel Emulation Timeout" 16 200
+xinput set-int-prop $trackptID "Evdev Wheel Emulation Axes" 8 6 7 4 5
+xinput set-int-prop $trackptID "Evdev Middle Button Emulation" 8 0
+xinput set-int-prop $trackptID "Evdev Wheel Emulation Inertia" 16 30
+xinput set-float-prop $trackptID "Device Accel Velocity Scaling" 50
+xset m 20 1

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+left=`xrandr | sed -ne "s/VGA.*\(left\).*(normal.*/\1/p"`
+if [ "$left" = "left" ]; then
+	echo 'vertical'
+else
+	echo 'movie'
+fi

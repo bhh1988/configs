@@ -1,0 +1,27 @@
+#!/bin/bash
+
+ORIG_BORDER=`sed -ne 's/myBorderWidth *\t* *= *\t* *\([0-9]*\)/\1/p' .xmonad.hs`
+MOVIE=`~/.screenmode`
+
+# border is thick. Make it movie mode
+if [ $ORIG_BORDER -ne 0 ]; then
+
+	# only toggle the screen if in vertical mode
+	if [ "$MOVIE" = "vertical" ]; then
+		~/.screen_toggle
+	fi
+
+	# copy the line to register q
+	vim '+/myBorderWidth' '+normal "qyy' '+s/\(myBorderWidth.*\)\([0-9][0-9]*\)/\10' '+x' .xmonad.hs
+	xmonad --restart
+
+else
+	# only return to vertical mode if currently in movie mode
+	if [ "$MOVIE" = "movie" ]; then
+		~/.screen_toggle
+	fi
+
+	# paste the line from register q
+	vim '+/myBorderWidth' '+normal dd' '+normal "qp' '+x' .xmonad.hs
+	xmonad --restart
+fi

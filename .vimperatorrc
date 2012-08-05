@@ -1,0 +1,22 @@
+" map Ctrl-c to Esc
+nmap <C-c> <Esc>
+vmap <C-c> <Esc>
+imap <C-c> <Esc>
+cmap <C-c> <Esc>
+
+" insert mode mappings
+imap <C-h> <Left>
+imap <C-l> <Right>
+imap <C-k> <Up>
+imap <C-j> <Down>
+imap <C-o> <Esc>:back<CR>
+
+nmap x :tabclose<CR>
+nmap J :tabprevious<CR>
+nmap K :tabnext<CR>
+nmap <C-p> <Nop>
+nmap <C-n> :winopen<CR>
+nmap d <Nop>
+nmap <C-p> :tabduplicate<CR>
+
+" inoremap <M-a> a

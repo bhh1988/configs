@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# horizontal screens
+function horizontalmode()
+{
+	xrandr --output 'VGA1' --rotate normal
+	xrandr --output 'HDMI1' --rotate normal
+	xrandr --output 'HDMI1' --pos 0x0
+	xrandr --output 'VGA1' --pos 1920x0
+	xrandr --output 'HDMI1' --primary
+	if [ -e ~/Pictures/background ]; then
+		xloadimage -onroot -fullscreen -zoom 150 ~/Pictures/background
+	else
+		xsetroot -solid gray
+	fi
+}
+
+# vertical screens
+function verticalmode()
+{
+	xrandr --output 'VGA1' --rotate left
+	xrandr --output 'HDMI1' --rotate left
+	xrandr --output 'HDMI1' --pos 0x0
+	xrandr --output 'VGA1' --pos 1080x0
+	xrandr --output 'HDMI1' --primary
+	if [ -e ~/Pictures/background ]; then
+		xloadimage -onroot -fullscreen -zoom 150 ~/Pictures/background
+	else
+		xsetroot -solid gray
+	fi
+}
+
+MOVIE=`~/.screenmode`
+if [ "$MOVIE" = "vertical" ]; then
+	horizontalmode
+else
+	verticalmode
+fi
+
