@@ -8,14 +8,16 @@ function horizontalmode()
 	xrandr --output 'HDMI1' --pos 0x0
 	xrandr --output 'VGA1' --pos 1920x0
 	xrandr --output 'HDMI1' --primary
-	if [ -e ~/Pictures/background ]; then
-		xloadimage -onroot -fullscreen -zoom 150 ~/Pictures/background
-	elif [ -e ~/Pictures/center ]; then
-		hsetroot -solid \#000000
-        hsetroot -center ~/Pictures/center
-	else
-		hsetroot -solid \#000000
-	fi
+    if [ $1 -ne 0 ]; then
+        if [ -e ~/Pictures/background ]; then
+            xloadimage -onroot -fullscreen -zoom 150 ~/Pictures/background
+        elif [ -e ~/Pictures/center ]; then
+            hsetroot -solid \#000000
+            hsetroot -center ~/Pictures/center
+        else
+            hsetroot -solid \#000000
+        fi
+    fi
 }
 
 # vertical screens
@@ -26,20 +28,22 @@ function verticalmode()
 	xrandr --output 'HDMI1' --pos 0x0
 	xrandr --output 'VGA1' --pos 1080x0
 	xrandr --output 'HDMI1' --primary
-	if [ -e ~/Pictures/background ]; then
-		xloadimage -onroot -fullscreen -zoom 150 ~/Pictures/background
-	elif [ -e ~/Pictures/center ]; then
-		hsetroot -solid \#000000
-        hsetroot -center ~/Pictures/center
-	else
-		hsetroot -solid \#000000
-	fi
+    if [ $1 -ne 0 ]; then
+        if [ -e ~/Pictures/background ]; then
+            xloadimage -onroot -fullscreen -zoom 150 ~/Pictures/background
+        elif [ -e ~/Pictures/center ]; then
+            hsetroot -solid \#000000
+            hsetroot -center ~/Pictures/center
+        else
+            hsetroot -solid \#000000
+        fi
+    fi
 }
 
 MOVIE=`~/.screenmode`
 if [ "$MOVIE" = "vertical" ]; then
-	horizontalmode
+	horizontalmode $#
 else
-	verticalmode
+	verticalmode $#
 fi
 

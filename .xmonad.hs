@@ -286,6 +286,8 @@ myManageHook = composeAll
     , className =? "Gimp"           --> doFloat
     , className =? "Thunderbird"    --> doShift "8"
     , className =? "Rhythmbox"      --> doShift "8"
+    , className =? "Update-manager" --> doShift "8"
+    , className =? "Update-manager" --> doFloat
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore ]
  
@@ -307,7 +309,7 @@ myLogHook = fadeInactiveLogHook fadeAmount
 --
 -- By default, do nothing.
 myStartupHook = do
-    spawn "~/.xmonadstartups"
+    spawn "~/.xmonad_startups"
  
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.

@@ -9,9 +9,13 @@ xmodmap ~/.xmodmaprc
 
 if [ "$GDMSESSION" = "awesome" -o "$GDMSESSION" = "xmonad" ]; then
   xmodmap ~/.xmodmap_xmonad
+  xscreensaver -nosplash &
+  # give screen_toggle an argument in order to not set
+  # background image
+  ~/.screen_toggle 1
+else
+  ~/.screen_toggle
 fi
 
 ~/.xinputrc
-~/.screen_toggle
-xscreensaver -nosplash &
-~/.dropbox-dist/dropboxd
+~/.dropbox-dist/dropboxd &
