@@ -15,6 +15,7 @@ import XMonad.Util.EZConfig(additionalKeys)
 import System.Exit
 import System.IO
 import XMonad.Actions.CycleWS
+import XMonad.Hooks.FadeInactive
 import Control.Monad (when)
  
 import qualified XMonad.StackSet as W
@@ -38,7 +39,7 @@ myModMask       = mod4Mask
 -- The mask for the numlock key. Numlock status is "masked" from the
 -- current modifier status, so the keybindings will work with numlock on or
 -- off. You may need to change this on some systems.
-myBorderWidth   = 4
+myBorderWidth   = 1
 --
 -- You can find the numlock modifier by running "xmodmap" and looking for a
 -- modifier with Num_Lock bound to it:
@@ -97,6 +98,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- movie view
     , ((modm,               xK_v     ), spawn "~/.movie_toggle")
  
+    -- movie view
+    , ((modm,               xK_f     ), spawn "~/.xcompmgr_toggle")
+
     -- launch gmrun
     --, ((modm .|. shiftMask, xK_p     ), spawn "gmrun")
  
@@ -290,6 +294,10 @@ myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = True
  
  
+myLogHook :: X ()
+myLogHook = fadeInactiveLogHook fadeAmount
+  where fadeAmount = 0.25
+
 ------------------------------------------------------------------------
 -- Startup hook
  
@@ -299,8 +307,7 @@ myFocusFollowsMouse = True
 --
 -- By default, do nothing.
 myStartupHook = do
-    spawn "thunderbird"
-    spawn "rhythmbox-client --play-pause"
+    spawn "~/.xmonadstartups"
  
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
@@ -328,7 +335,7 @@ main = do
       -- hooks, layouts
         layoutHook         = avoidStruts $ myLayout,
         manageHook         = manageDocks <+> myManageHook,
-        logHook            = dynamicLogWithPP xmobarPP
+        logHook            = myLogHook <+> dynamicLogWithPP xmobarPP
 	   					{ ppOutput = hPutStrLn xmproc,
 						  ppTitle = shorten 0
 						},

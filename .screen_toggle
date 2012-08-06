@@ -10,8 +10,11 @@ function horizontalmode()
 	xrandr --output 'HDMI1' --primary
 	if [ -e ~/Pictures/background ]; then
 		xloadimage -onroot -fullscreen -zoom 150 ~/Pictures/background
+	elif [ -e ~/Pictures/center ]; then
+		hsetroot -solid \#000000
+        hsetroot -center ~/Pictures/center
 	else
-		xsetroot -solid gray
+		hsetroot -solid \#000000
 	fi
 }
 
@@ -25,8 +28,11 @@ function verticalmode()
 	xrandr --output 'HDMI1' --primary
 	if [ -e ~/Pictures/background ]; then
 		xloadimage -onroot -fullscreen -zoom 150 ~/Pictures/background
+	elif [ -e ~/Pictures/center ]; then
+		hsetroot -solid \#000000
+        hsetroot -center ~/Pictures/center
 	else
-		xsetroot -solid gray
+		hsetroot -solid \#000000
 	fi
 }
 

@@ -14,3 +14,4 @@ fi
 ~/.xinputrc
 ~/.screen_toggle
 xscreensaver -nosplash &
+~/.dropbox-dist/dropboxd

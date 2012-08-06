@@ -1,0 +1,11 @@
+#!/bin/bash
+
+STATUS=`ps nc -C xcompmgr | wc -l`
+
+if [ $STATUS = "1" ]; then
+       xcompmgr -c -C -t-5 -l-5 -r4.2 -o.55 &
+else
+       pkill xcompmgr &
+fi
+
+exit 0
