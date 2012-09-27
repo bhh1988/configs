@@ -1,4 +1,0 @@
-! Make Alt_L another mod4 (nice for awesome)
-
-remove mod1 = Alt_L
-add mod4 = Alt_L

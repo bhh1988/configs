@@ -1,0 +1,19 @@
+TAB: menu-complete
+# Not all systems have menu-complete-backward
+#"\e[Z": menu-complete-backward
+"\e[Z": "\e-1\C-i"
+#set completion-ignore-case On
+Control-r: history-search-backward
+Control-t: history-search-forward
+"\e[1;5A": history-search-backward
+"\e[1;5B": history-search-backward
+Control-j: next-history
+Control-k: previous-history
+Control-h: backward-char
+Control-l: forward-char
+Control-g: end-of-history
+Control-b: backward-word
+Control-f: forward-word
+"\e[1;5D": backward-word
+"\e[1;5C": forward-word
+Control-n: possible-completions
