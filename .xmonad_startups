@@ -2,13 +2,17 @@
 
 # if statements to check if already running
 if [ `ps nc -C thunderbird | wc -l` = 1 ]; then
-    thunderbird
+    thunderbird &
 fi
 
 if [ `ps nc -C rhythmbox | wc -l` = 1 ]; then
-    rhythmbox-client --play-pause
+    rhythmbox-client --play-pause &
 fi
 
 if [ `ps nc -C xcompmgr | wc -l` = 1 ]; then
-    xcompmgr -c
+    xcompmgr -c &
+fi
+
+if [ `ps nc -C update-manager | wc -l` = 1 ]; then
+    update-manager &
 fi

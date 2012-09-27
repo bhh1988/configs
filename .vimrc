@@ -1,4 +1,5 @@
-:set number
+set number
+set cursorline
 if has("gui_running")
 set bg=light
 map <C-Q> :quit!<CR>
@@ -44,12 +45,16 @@ inoremap <C-j> <down>
 imap <C-k> <up>
 " map CTRL-B to word-back (insert mode)
 imap <C-b> <esc>B<left>i
+imap <C-left> <esc>B<left>i
 " map CTRL-F to word-forward (insert mode)
 imap <C-f> <esc><right>E<right>i
+imap <C-right> <esc><right>E<right>i
 " map CTRL-E to end-of-line (normal mode)
 nmap <C-e> $
 " map CTRL-A to beginning-of-line (normal mode)
 nmap <C-a> ^
+" get rid of search highlight in vim
+nmap <C-h> :let @/=""<CR>
 " Write as root after having opened the file as normal user
 command W w !sudo tee % >/dev/null
 

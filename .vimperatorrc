@@ -18,5 +18,6 @@ nmap <C-p> <Nop>
 nmap <C-n> :winopen<CR>
 nmap d <Nop>
 nmap <C-p> :tabduplicate<CR>
+nmap <C-m> :tabmove<CR>
 
 " inoremap <M-a> a

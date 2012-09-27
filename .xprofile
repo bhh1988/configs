@@ -5,10 +5,18 @@
 # reset the keymaps, undoing any custom xmodmap
 # commands that happen previously
 setxkbmap -option terminate:ctrl_alt_bksp
-xmodmap ~/.xmodmaprc
+if [ `xinput list | grep 'HID' | wc -l` -gt 0 ]; then
+  KINESIS="TRUE"
+fi
+
+if [ "$KINESIS" != "TRUE" ]; then
+  xmodmap ~/.xmodmaprc.old
+fi
 
 if [ "$GDMSESSION" = "awesome" -o "$GDMSESSION" = "xmonad" ]; then
-  xmodmap ~/.xmodmap_xmonad
+  if [ "$KINESIS" != "TRUE" ]; then
+    xmodmap ~/.xmodmap_monad.old
+  fi
   xscreensaver -nosplash &
   # give screen_toggle an argument in order to not set
   # background image

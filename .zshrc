@@ -36,19 +36,27 @@ promptinit
 export EDITOR='vim'
 
 # Set some keybindings
-bindkey -v
+bindkey -e
 bindkey '^R' history-beginning-search-backward
+bindkey '^[[1;5A' history-beginning-search-backward
 # For some reason, '^S' refuses to be mapped...
 #bindkey '^S' history-beginning-search-forward
 bindkey '^T' history-beginning-search-forward
+bindkey '^[[1;5B' history-beginning-search-backward
 bindkey '^O' accept-line-and-down-history
 bindkey '^J' down-history
 bindkey '^K' up-history
 bindkey '^G' end-of-history
 bindkey '^E' end-of-line
+bindkey '^[OF' end-of-line
 bindkey '^A' beginning-of-line
+bindkey '^[OH' beginning-of-line
 bindkey '^B' vi-backward-blank-word
-bindkey '^F' vi-forward-blank-word-end
+bindkey '^[[1;5D' vi-backward-blank-word
+bindkey '^[[D' backward-char
+bindkey '^F' emacs-forward-word
+bindkey '^[[1;5C' emacs-forward-word
+bindkey '^[[C' forward-char
 bindkey '^U' backward-kill-line
 bindkey '^P' kill-line
 bindkey '^H' vi-backward-char
@@ -58,6 +66,7 @@ bindkey '^?' backward-delete-char
 bindkey '^W' backward-kill-word
 bindkey '^[[3;3~' kill-word
 bindkey '\e[Z' reverse-menu-complete
+bindkey '^[' vi-forward-char
 
 # History
 HISTFILE=~/.history
@@ -167,6 +176,10 @@ alias ....='cd ../../.. && ls'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
+alias gvim='gvim -f'
+alias picture='eog'
+alias pdf='evince'
+alias scan='xsane'
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'

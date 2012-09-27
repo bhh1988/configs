@@ -46,3 +46,5 @@ apt-get install dropbox
 apt-get install xcompmgr transset, for fade-out windows!
 
 apt-get install software-center for launching ubuntu software center from command line
+
+gvim is super slow with version 7.3. Call gvim with gvim -f

@@ -39,13 +39,13 @@ myModMask       = mod4Mask
 -- The mask for the numlock key. Numlock status is "masked" from the
 -- current modifier status, so the keybindings will work with numlock on or
 -- off. You may need to change this on some systems.
-myBorderWidth   = 1
 --
 -- You can find the numlock modifier by running "xmodmap" and looking for a
 -- modifier with Num_Lock bound to it:
 --
 -- > $ xmodmap | grep Num
 -- > mod2        Num_Lock (0x4d)
+myBorderWidth   = 1
 --
 -- Set numlockMask = 0 if you don't have a numlock key, or want to treat
 -- numlock status separately.
@@ -87,10 +87,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. controlMask, xK_t), spawn $ XMonad.terminal conf)
 
     -- launch firefox
-    , ((modm .|. controlMask, xK_f), spawn "firefox")
+    , ((modm .|. shiftMask, xK_f), spawn "firefox")
 
     -- launch thunderbird
-    , ((modm .|. controlMask, xK_m), spawn "thunderbird")
+    , ((modm .|. shiftMask, xK_m), spawn "thunderbird")
 
     -- launch dmenu
     , ((modm,               xK_p     ), spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
@@ -99,13 +99,13 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_v     ), spawn "~/.movie_toggle")
  
     -- movie view
-    , ((modm,               xK_f     ), spawn "~/.xcompmgr_toggle")
+    , ((modm,               xK_f     ), spawn "~/.xmonad_fade")
 
     -- launch gmrun
     --, ((modm .|. shiftMask, xK_p     ), spawn "gmrun")
  
     -- close focused window 
-    , ((modm .|. shiftMask, xK_c     ), kill)
+    , ((modm,               xK_c     ), kill)
     , ((shiftMask .|. controlMask, xK_q), kill)
  
      -- Rotate through the available layout algorithms
@@ -172,7 +172,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm              , xK_q     ), restart "xmonad" True)
 
     -- Lock the screen
-    , ((modm .|. controlMask, xK_Delete     ), spawn "xscreensaver-command -lock")
+    , ((modm .|. controlMask, xK_BackSpace     ), spawn "xscreensaver-command -lock")
 
     -- Suspend
     , ((modm .|. controlMask, xK_Prior     ), spawn "xscreensaver-command -lock && pmi action suspend")
@@ -215,13 +215,22 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     ++
 
     -- XF86AudioMute
-    [ ((0 , 0x1008ff12 ), spawn "~/.amixer_muter")
+    --[ ((0 , 0x1008ff12 ), spawn "~/.amixer_muter")
 
     -- XF86AudioLowerVolume
-    , ((0 , 0x1008ff11 ), spawn "amixer set Master 5%-")
+    --, ((0 , 0x1008ff11 ), spawn "amixer set Master 5%-")
 
     -- XF86AudioRaiseVolume
-    , ((0 , 0x1008ff13 ), spawn "amixer set Master 5%+")
+    --, ((0 , 0x1008ff13 ), spawn "amixer set Master 5%+")
+
+    -- XF86AudioMute
+    [ ((modm , 0xffc7 ), spawn "~/.amixer_muter")
+
+    -- XF86AudioLowerVolume
+    , ((modm , 0xffc8 ), spawn "amixer set Master 5%-")
+
+    -- XF86AudioRaiseVolume
+    , ((modm , 0xffc9 ), spawn "amixer set Master 5%+")
     ]
  
 ------------------------------------------------------------------------
@@ -287,7 +296,7 @@ myManageHook = composeAll
     , className =? "Thunderbird"    --> doShift "8"
     , className =? "Rhythmbox"      --> doShift "8"
     , className =? "Update-manager" --> doShift "8"
-    , className =? "Update-manager" --> doFloat
+    --, className =? "Update-manager" --> doFloat
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore ]
  
@@ -298,7 +307,8 @@ myFocusFollowsMouse = True
  
 myLogHook :: X ()
 myLogHook = fadeInactiveLogHook fadeAmount
-  where fadeAmount = 0.25
+  where fadeAmount = 0.5
+--  where fadeAmount = 1
 
 ------------------------------------------------------------------------
 -- Startup hook

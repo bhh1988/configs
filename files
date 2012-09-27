@@ -11,11 +11,8 @@
 .vimperatorrc
 .vimrc
 .xcompmgr_toggle
-.xinitrc
 .xinputrc
 .xmobarrc
-.xmodmaprc
-.xmodmap_xmonad
 .xmonad.hs
 .xmonad_startups
 .xprofile
@@ -23,3 +20,4 @@
 .bashrc
 .bash_aliases
 .profile
+.inputrc
