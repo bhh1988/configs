@@ -2,6 +2,7 @@
 
 for file in `cat files`
 do
-    cp -L ~/"$file" ./"$file"
+    target=`basename $file`
+    cp -L ~/"$file" ./"$target"
 done
 

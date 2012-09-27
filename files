@@ -21,3 +21,6 @@
 .bash_aliases
 .profile
 .inputrc
+bin/mozilla_copy_paste
+bin/platformHTMLBindings.xml
+bin/platformHTMLBindings.xml.mod

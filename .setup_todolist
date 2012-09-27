@@ -33,6 +33,8 @@ apt-get install powermanagement-interface and hal. Together, this allows you to 
 
 apt-get install byobu (may have to run byobu-select-backend to change from tmux to screen, in order to be able to change escape keybinding (tmux has a bug))
 
+In order to use ctrl-left, right, up, down arrow keys in byobu, comment out the appropriate lines in /usr/share/byobu/keybindings/f-keys.screen
+
 apt-get install xmobar, set up with xmobarrc to call show_volume script
 
 apt-get install hsetroot for background color or image
@@ -48,3 +50,5 @@ apt-get install xcompmgr transset, for fade-out windows!
 apt-get install software-center for launching ubuntu software center from command line
 
 gvim is super slow with version 7.3. Call gvim with gvim -f
+
+

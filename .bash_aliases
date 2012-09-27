@@ -43,8 +43,8 @@ function pu()
 	# hate typing in the '+' everytime. If first arg
 	# is a number, just assume they mean +num (unless
 	# there is a directory named that number! )
-	if [[ "$1" =~ "^[0-9]+$" && ! -d "$1" ]]; then
-		pushd "+$1" && ls
+	if [[ $1 =~ ^[0-9]+$ && ! -d "$1" ]]; then
+		pushd +"$1" && ls
 	elif [[ "$#" = "0" ]]; then
         pushd
     else
@@ -54,8 +54,8 @@ function pu()
 
 function po()
 {
-	if [[ "$1" =~ "^[0-9]+$" ]]; then
-		popd "+$1" && ls
+	if [[ $1 =~ ^[0-9]+$ ]]; then
+		popd +"$1" && ls
 	elif [[ "$#" = "0" ]]; then
         popd
     else
