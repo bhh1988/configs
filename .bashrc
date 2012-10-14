@@ -98,3 +98,4 @@ fi
 
 BASH_STARTED='true'
 
+#export LD_LIBRARY_PATH=

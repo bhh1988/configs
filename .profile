@@ -26,5 +26,6 @@ if [ -d "/usr/lib/jvm/jdk1.7.0" ] ; then
 fi
 
 PATH="$JAVA_HOME/bin:$PATH"
+LD_LIBRARY_PATH="$PATH:$LD_LIBRARY_PATH"
 
 _byobu_sourced=1 . /usr/bin/byobu-launch

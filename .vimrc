@@ -1,33 +1,38 @@
 set number
 set cursorline
-if has("gui_running")
-set bg=light
-map <C-Q> :quit!<CR>
-else
-set bg=dark
-endif
-:set hlsearch
+set hlsearch
+" yanking text goes to the system clipboard
 set clipboard=unnamedplus
+if has("gui_running")
+    set bg=light
+else
+    set bg=dark
+endif
+" For using screen/byobu
+if match($TERM, "screen*")!=-1
+    set term=xterm
+endif
+" REQUIRED. This makes vim invoke Latex-Suite when you open a tex file.
 filetype plugin on
 
 "INDENTATION
 "========================================================
 "Tabsize
-:let tabsize=4
+let tabsize=4
 
 "Sets the size of <TAB>
-:execute "set tabstop=".tabsize
+execute "set tabstop=".tabsize
 "Sets the size of shift operator << or >> done on lines
-:execute "set shiftwidth=".tabsize
+execute "set shiftwidth=".tabsize
 
 "Soft tabs
 "When set will use soft tabs with number of spaces equal
 "to softtabstop when softtabstop is defined, otherwise
 "tabstop number of spaces
-:set expandtab
+set expandtab
 ":set "softtabstop=".tabsize
 
-:set autoindent
+set autoindent
 
 " Key Bindings
 "
@@ -56,10 +61,7 @@ nmap <C-a> ^
 " get rid of search highlight in vim
 nmap <C-h> :let @/=""<CR>
 " Write as root after having opened the file as normal user
-command W w !sudo tee % >/dev/null
-
-" REQUIRED. This makes vim invoke Latex-Suite when you open a tex file.
-filetype plugin on
+command! W w !sudo tee % >/dev/null
 
 " IMPORTANT: win32 users will need to have 'shellslash' set so that latex
 " " can be called correctly.
@@ -76,3 +78,4 @@ set grepprg=grep\ -nH\ $*
 " " 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
 " " The following changes the default filetype back to 'tex':
 let g:tex_flavor='latex'
+let g:Imap_FreezeImap=1

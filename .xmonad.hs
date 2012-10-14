@@ -45,8 +45,8 @@ myModMask       = mod4Mask
 --
 -- > $ xmodmap | grep Num
 -- > mod2        Num_Lock (0x4d)
-myBorderWidth   = 1
 --
+myBorderWidth   = 1
 -- Set numlockMask = 0 if you don't have a numlock key, or want to treat
 -- numlock status separately.
 --
@@ -98,7 +98,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- movie view
     , ((modm,               xK_v     ), spawn "~/.movie_toggle")
  
-    -- movie view
+    -- toggle fading of un-focused windows
     , ((modm,               xK_f     ), spawn "~/.xmonad_fade")
 
     -- launch gmrun

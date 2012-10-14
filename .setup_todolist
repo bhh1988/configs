@@ -13,6 +13,8 @@ because zip will realize that the path already exists and just replace the file 
 
 Copy this new omni.ja back into the /usr/lib/firefox/omni.ja, overwriting the original. After that, try disabling and re-enabling an add-on (restarting firefox) and firefox will then load the new ja.
 
+Have created a script to automate this process, look at mozilla_copy_paste. Requires the platformHTMLBindings.xml and platformHTMLBindings.xml.mod files to be in the same directory. Still need to disable and enable an add-on in firefox/thunderbird in order to trigger the change.
+
 Firebug and Adblock add-ons conflict with accel,shift v and accel,shift c respectively. Go to about:config, searching for "accel" to see the conflicts and resolve them. I've mapped them to accel,shift w and accel,shift b respectively.
 
 Go to http://mycroft.mozdev.org/ and install the naver dictionary search bar for firefox
@@ -51,4 +53,6 @@ apt-get install software-center for launching ubuntu software center from comman
 
 gvim is super slow with version 7.3. Call gvim with gvim -f
 
+apt-get install octave
 
+apt-get install texlive (latex)

@@ -11,4 +11,7 @@ else
     amixer set Surround unmute
     amixer set Center unmute
     amixer set LFE unmute
+    # noticed that after unmuting, might need to adjust the volume of 'Center' to
+    # kick in the sound. Not consistent, but if it happens again, add that to this list
 fi
+
