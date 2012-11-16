@@ -46,13 +46,13 @@ myModMask       = mod4Mask
 -- > $ xmodmap | grep Num
 -- > mod2        Num_Lock (0x4d)
 --
-myBorderWidth   = 1
 -- Set numlockMask = 0 if you don't have a numlock key, or want to treat
 -- numlock status separately.
 --
 --myNumlockMask   = 0
  
 -- The default number of workspaces (virtual screens) and their names.
+myBorderWidth   = 1
 -- By default we use numeric strings, but any string may be used as a
 -- workspace name. The number of workspaces is determined by the length
 -- of this list.
@@ -307,8 +307,8 @@ myFocusFollowsMouse = True
  
 myLogHook :: X ()
 myLogHook = fadeInactiveLogHook fadeAmount
-  where fadeAmount = 0.5
---  where fadeAmount = 1
+--  where fadeAmount = 0.5
+  where fadeAmount = 1
 
 ------------------------------------------------------------------------
 -- Startup hook

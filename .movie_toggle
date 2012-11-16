@@ -13,6 +13,8 @@ if [ $ORIG_BORDER -ne 0 ]; then
 
 	# copy the line to register q
 	vim '+/myBorderWidth' '+normal "qyy' '+s/\(myBorderWidth.*\)\([0-9][0-9]*\)/\10' '+x' .xmonad.hs
+    # turn off the screensaver, store the time in register r
+    vim '+/timeout' '+normal "ryy' '+s/\(timeout[^0-9]*\)\([0-9]:.*\)/\11:00:00' '+x' .xscreensaver
 	xmonad --restart
 
 else
@@ -23,5 +25,7 @@ else
 
 	# paste the line from register q
 	vim '+/myBorderWidth' '+normal dd' '+normal "qp' '+x' .xmonad.hs
+    # restore the screensave from register r
+    vim '+/timeout' '+normal dd' '+normal k' '+normal "rp' '+x' .xscreensaver
 	xmonad --restart
 fi
