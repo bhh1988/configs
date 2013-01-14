@@ -17,6 +17,13 @@ import System.IO
 import XMonad.Actions.CycleWS
 import XMonad.Hooks.FadeInactive
 import Control.Monad (when)
+
+import XMonad.Layout.TwoPane
+import XMonad.Layout.Combo
+import XMonad.Layout.Simplest
+import XMonad.Layout.Tabbed
+import XMonad.Layout.WindowNavigation
+import XMonad.Layout.Accordion
  
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
@@ -52,7 +59,6 @@ myModMask       = mod4Mask
 --myNumlockMask   = 0
  
 -- The default number of workspaces (virtual screens) and their names.
-myBorderWidth   = 1
 -- By default we use numeric strings, but any string may be used as a
 -- workspace name. The number of workspaces is determined by the length
 -- of this list.
@@ -60,6 +66,7 @@ myBorderWidth   = 1
 -- A tagging example:
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
+myBorderWidth   = 1
 --
 myWorkspaces    = ["1","2","3","4","5","6","7","8","9"]
 
@@ -74,7 +81,7 @@ viewHidden w = do
 
 -- Border colors for unfocused and focused windows, respectively.
 --
-myNormalBorderColor  = "#dddddd"
+myNormalBorderColor  = "#77bb77"
 myFocusedBorderColor = "#ff0000"
  
 ------------------------------------------------------------------------
@@ -148,7 +155,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
  
     -- Expand the master area
     , ((modm,               xK_Down     ), sendMessage Expand)
- 
+
     -- Push window back into tiling
     , ((modm,               xK_t     ), withFocused $ windows . W.sink)
  
@@ -261,19 +268,29 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = Mirror tiled ||| Full -- ||| tiled
-  where
-     -- default tiling algorithm partitions the screen into two panes
-     tiled   = Tall nmaster delta ratio
- 
-     -- The default number of windows in the master pane
-     nmaster = 1
- 
-     -- Default proportion of screen occupied by master pane
-     ratio   = 1/2
- 
-     -- Percent of screen to increment by when resizing panes
-     delta   = 3/100
+
+--myLayout =  dragPane Horizontal 0.1 0.5 ||| Mirror tiled ||| Full -- ||| tiled
+--myLayout =  Mirror tiled ||| Full -- ||| tiled
+--  where
+--     -- default tiling algorithm partitions the screen into two panes
+--     tiled   = Tall nmaster delta ratio
+-- 
+--     -- The default number of windows in the master pane
+--     nmaster = 1
+-- 
+--     -- Default proportion of screen occupied by master pane
+--     ratio   = 1/2
+-- 
+--     -- Percent of screen to increment by when resizing panes
+--     delta   = 3/100
+
+--myLayout = Mirror (combineTwo (TwoPane 0.03 0.5) (Accordion) (Mirror (Tall 1 0.03 0.5)))
+myLayout = Mirror (combineTwo (TwoPane 0.03 0.5) (Accordion) (Accordion)) ||| simpleTabbed
+--
+--myLayout = simpleTabbed
+--myLayout = Mirror (combineTwo (TwoPane 0.03 0.5) (Mirror simpleTabbed) (simpleTabbed))
+--myLayout = Mirror (multimastered 2 (1/100) (1/2) $ Accordion)
+--myLayout = Mirror (mastered (1/100) (1/2) $ Accordion)
  
 ------------------------------------------------------------------------
 -- Window rules:
@@ -302,13 +319,13 @@ myManageHook = composeAll
  
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse :: Bool
-myFocusFollowsMouse = True
+myFocusFollowsMouse = False
  
  
 myLogHook :: X ()
 myLogHook = fadeInactiveLogHook fadeAmount
---  where fadeAmount = 0.5
-  where fadeAmount = 1
+  where fadeAmount = 0.5
+--  where fadeAmount = 1
 
 ------------------------------------------------------------------------
 -- Startup hook

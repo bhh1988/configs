@@ -98,4 +98,4 @@ fi
 
 BASH_STARTED='true'
 
-#export LD_LIBRARY_PATH=
+export LD_LIBRARY_PATH=/usr/local/lib
