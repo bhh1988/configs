@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# this sed command toggles the commented lines to change
+# the fade amount. Then recompiles xmonad
+
+tmpfilename='superrarefilenamecannotexist'
+
+sed -e '
+# if fadeAmount line is uncommented, branch to comment
+/^ *where fadeAmount.*/ b comment
+
+# else if fadeAmount line is commented, branch to uncomment
+/^-- *where fadeAmount.*/ b uncomment
+
+# else branch to end
+b
+
+# comment, then branch to end
+:comment
+s/\(^ *where fadeAmount = .*\)/--\1/
+b
+
+# uncomment, then branch to end
+:uncomment
+s/^--\( *where fadeAmount = .*\)/\1/
+b
+
+' ~/.xmonad/xmonad.hs > ~/$tmpfilename
+
+mv ~/$tmpfilename ~/.xmonad/xmonad.hs
+xmonad --restart

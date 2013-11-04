@@ -2,7 +2,7 @@
 # Written by xscreensaver-demo 5.15 for bhh1988 on Sat Jul 28 14:12:29 2012.
 # http://www.jwz.org/xscreensaver/
 
-timeout:	0:10:00
+timeout:	1:00:00
 cycle:		0:10:00
 lock:		True
 lockTimeout:	0:01:00

@@ -19,14 +19,17 @@ import XMonad.Hooks.FadeInactive
 import Control.Monad (when)
 
 import XMonad.Layout.TwoPane
-import XMonad.Layout.Combo
+--import XMonad.Layout.Combo
 import XMonad.Layout.Simplest
 import XMonad.Layout.Tabbed
-import XMonad.Layout.WindowNavigation
-import XMonad.Layout.Accordion
+--import XMonad.Layout.Accordion
+import XMonad.Layout.BryanSingleScreen
+import XMonad.Layout.BryanAccordion
+import XMonad.Layout.ShrinkExpandFlipper
  
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
+import Data.List(isInfixOf)
  
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
@@ -66,8 +69,8 @@ myModMask       = mod4Mask
 -- A tagging example:
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
-myBorderWidth   = 1
 --
+myBorderWidth   = 0
 myWorkspaces    = ["1","2","3","4","5","6","7","8","9"]
 
 -- move to a different workspace and follow it
@@ -79,6 +82,36 @@ viewHidden w = do
   ws <- gets windowset
   when (w `notElem` (map (W.tag . W.workspace) $ W.current ws : W.visible ws)) (windows $ W.view w)
 
+upStack :: X()
+upStack = do
+    ws <- gets windowset
+    let l = W.layout $ (W.workspace . W.current) ws
+        d = description l
+        super = "MasterPlusSublayout"
+        sub = "Tabbed"
+    if super `isInfixOf` d
+        then if sub `isInfixOf` d
+                then sendMessage Down
+                    else sendMessage Up
+            else if sub `isInfixOf` d
+                then windows W.focusDown
+                    else windows W.focusUp
+
+downStack :: X()
+downStack = do
+    ws <- gets windowset
+    let l = W.layout $ (W.workspace . W.current) ws
+        d = description l
+        super = "MasterPlusSublayout"
+        sub = "Tabbed"
+    if super `isInfixOf` d
+        then if sub `isInfixOf` d
+                then sendMessage Up
+                    else sendMessage Down
+            else if sub `isInfixOf` d
+                then windows W.focusUp
+                    else windows W.focusDown
+        
 -- Border colors for unfocused and focused windows, respectively.
 --
 myNormalBorderColor  = "#77bb77"
@@ -97,7 +130,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_f), spawn "firefox")
 
     -- launch thunderbird
-    , ((modm .|. shiftMask, xK_m), spawn "thunderbird")
+    , ((modm .|. shiftMask, xK_t), spawn "thunderbird")
 
     -- launch dmenu
     , ((modm,               xK_p     ), spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
@@ -126,14 +159,18 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
  
     -- Move focus to the next window
     , ((modm,               xK_Tab   ), windows W.focusDown)
-    , ((modm,               xK_j     ), windows W.focusDown)
+    --, ((modm,               xK_k     ), windows W.focusDown)
+    , ((modm,               xK_j     ), downStack )
+    , ((modm,               xK_Down     ), downStack )
  
     -- Move focus to the previous window
-    , ((modm,               xK_k     ), windows W.focusUp  )
+    --, ((modm,               xK_j     ), windows W.focusUp  )
+    , ((modm,               xK_k     ), upStack  )
+    , ((modm,               xK_Up     ), upStack  )
     , ((modm .|. shiftMask, xK_Tab   ), windows W.focusUp  )
  
     -- Move focus to the master window
-    , ((modm,               xK_m     ), windows W.focusMaster  )
+    --, ((modm,               xK_m     ), windows W.focusMaster  )
  
     -- Swap the focused window and the master window
     , ((modm,               xK_Return), windows W.swapMaster)
@@ -150,11 +187,25 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Toggle the previous workspace
     , ((modm,               xK_u     ), toggleWS            )
 
+    -- Toggle focus between master and slave
+    , ((modm,               xK_m     ), windows W.focusMaster )
+
+    , ((modm .|. shiftMask, xK_m     ), sendMessage $ MainSlave )
+
+    -- Swap the master and slave windows
+    , ((modm,               xK_s     ), sendMessage SwapMasterAndSlave)
+
     -- Shrink the master area
-    , ((modm,               xK_Up     ), sendMessage Shrink)
+    , ((modm,               xK_Next     ), sendMessage $ Shrink)
  
     -- Expand the master area
-    , ((modm,               xK_Down     ), sendMessage Expand)
+    , ((modm,               xK_Prior     ), sendMessage $ Expand)
+
+    -- Swap focus between master and slave (sublayout) panes
+    , ((modm,               xK_l     ), sendMessage $ SlaveFocus)
+    , ((modm,               xK_Right     ), sendMessage $ SlaveFocus)
+    , ((modm,               xK_h     ), sendMessage $ MasterFocus)
+    , ((modm,               xK_Left     ), sendMessage $ MasterFocus)
 
     -- Push window back into tiling
     , ((modm,               xK_t     ), withFocused $ windows . W.sink)
@@ -207,29 +258,6 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
         --, (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
     ++
  
-    --
-    -- mod-{h,l,r}, Switch to physical/Xinerama screens 1, 2, or 3
-    -- mod-shift-{h,l,r}, Move client to screen 1, 2, or 3
-    --
-    [((modm, key), screenWorkspace sc >>= flip whenJust (windows . W.view))
-        | (key, sc) <- zip [xK_h, xK_l, xK_r] [0..]]
-
-    ++
-
-    [((shiftMask .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . viewShift))
-        | (key, sc) <- zip [xK_h, xK_l, xK_r] [0..]]
- 
-    ++
-
-    -- XF86AudioMute
-    --[ ((0 , 0x1008ff12 ), spawn "~/.amixer_muter")
-
-    -- XF86AudioLowerVolume
-    --, ((0 , 0x1008ff11 ), spawn "amixer set Master 5%-")
-
-    -- XF86AudioRaiseVolume
-    --, ((0 , 0x1008ff13 ), spawn "amixer set Master 5%+")
-
     -- XF86AudioMute
     [ ((modm , 0xffc7 ), spawn "~/.amixer_muter")
 
@@ -269,28 +297,10 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
 -- which denotes layout choice.
 --
 
---myLayout =  dragPane Horizontal 0.1 0.5 ||| Mirror tiled ||| Full -- ||| tiled
---myLayout =  Mirror tiled ||| Full -- ||| tiled
---  where
---     -- default tiling algorithm partitions the screen into two panes
---     tiled   = Tall nmaster delta ratio
--- 
---     -- The default number of windows in the master pane
---     nmaster = 1
--- 
---     -- Default proportion of screen occupied by master pane
---     ratio   = 1/2
--- 
---     -- Percent of screen to increment by when resizing panes
---     delta   = 3/100
 
---myLayout = Mirror (combineTwo (TwoPane 0.03 0.5) (Accordion) (Mirror (Tall 1 0.03 0.5)))
-myLayout = Mirror (combineTwo (TwoPane 0.03 0.5) (Accordion) (Accordion)) ||| simpleTabbed
---
---myLayout = simpleTabbed
---myLayout = Mirror (combineTwo (TwoPane 0.03 0.5) (Mirror simpleTabbed) (simpleTabbed))
---myLayout = Mirror (multimastered 2 (1/100) (1/2) $ Accordion)
---myLayout = Mirror (mastered (1/100) (1/2) $ Accordion)
+bryanTwoPane = flippedShrinkExpand (TwoPane 0.03 0.5)
+
+myLayout = bryanLayout (bryanTwoPane) (bryanAccordion) ||| bryanLayout (bryanTwoPane) (simpleTabbed) ||| simpleTabbed
  
 ------------------------------------------------------------------------
 -- Window rules:
@@ -321,11 +331,10 @@ myManageHook = composeAll
 myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = False
  
- 
 myLogHook :: X ()
 myLogHook = fadeInactiveLogHook fadeAmount
-  where fadeAmount = 0.5
---  where fadeAmount = 1
+--  where fadeAmount = 0.5
+  where fadeAmount = 1
 
 ------------------------------------------------------------------------
 -- Startup hook

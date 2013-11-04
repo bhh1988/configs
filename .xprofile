@@ -20,9 +20,11 @@ if [ "$GDMSESSION" = "awesome" -o "$GDMSESSION" = "xmonad" ]; then
   xscreensaver -nosplash &
   # give screen_toggle an argument in order to not set
   # background image
-  ~/.screen_toggle 1
+  #~/.screen_toggle_dualscreen 1
+  ~/.screen_settings_single
 else
-  ~/.screen_toggle
+  #~/.screen_toggle
+  ~/.screen_settings_single
 fi
 
 ~/.xinputrc

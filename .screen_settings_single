@@ -1,0 +1,10 @@
+#~/.xinputrc
+# xrandr settings for dual monitors
+#xrandr --output 'VGA1' --rotate left
+#xrandr --output 'HDMI1' --rotate left
+#xrandr --output 'HDMI1' --pos 0x0
+#xrandr --output 'VGA1' --pos 1080x0
+#
+xrandr --output 'HDMI1' --rotate normal
+xrandr --output 'HDMI1' --mode 1920x1080
+hsetroot -solid \#000000

@@ -32,6 +32,7 @@ function cs()
 {
     if [[ "$#" = "0" ]]; then
         cd && ls;
+        pwd > ~/.lastpwd
     else
         cd "$1" && ls;
         pwd > ~/.lastpwd
