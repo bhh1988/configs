@@ -1,0 +1,3 @@
+content     copypaste    chrome/content/
+override chrome://global/content/platformHTMLBindings.xml chrome://copypaste/content/platformHTMLBindings.xml
+override chrome://browser/content/browser.xul chrome://copypaste/content/browser.xul

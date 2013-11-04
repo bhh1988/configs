@@ -1,0 +1,23 @@
+Hopefully copypaste.xpi won't need to be udpated often, but just in case:
+
+Important contents are platformHTMLBindings.xml and browser.xul.
+
+platformHTMLBindings.xml
+This comes from unzipping /usr/lib/firefox/omni.ja and looking at
+chrome/toolkit/content/global/platformHTMLBindings.xml, replacing the relevant
+keybinding modifiers to be "accel,shift" instead of "accel."
+
+browser.xul
+This comes from unzipping /usr/lib/firefox/browser/omni.ja and looking at
+chrome/browser/content/browser/browser.xul. Grep for PageSource and find the
+relevant keybinding lines for the View:PageSource and View:PageInfo commands.
+These were overridden because sometimes they seem to be invoked when I press
+Ctrl+U and Ctrl+I for kill-line and forward commands.
+
+After modifying those two files and putting them in our own extensions path
+at "extensions/copypaste/chrome/content", inside of extensions/copypaste run:
+
+`zip -r copypaste.xpi *`
+
+And load this Firefox add-on from Firefox using the "Install Add-on From File"
+option in the add-ons page.
