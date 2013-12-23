@@ -154,6 +154,7 @@
     <command id="Tools:DevToolbox" oncommand="gDevToolsBrowser.toggleToolboxCommand(gBrowser);"/>
     <command id="Tools:DevToolbar" oncommand="DeveloperToolbar.toggle();" disabled="true" hidden="true"/>
     <command id="Tools:DevToolbarFocus" oncommand="DeveloperToolbar.focusToggle();" disabled="true"/>
+    <command id="Tools:DevAppMgr" oncommand="gDevToolsBrowser.openAppManager(gBrowser);" disabled="true" hidden="true"/>
     <command id="Tools:ChromeDebugger" oncommand="BrowserDebuggerProcess.init();" disabled="true" hidden="true"/>
     <command id="Tools:BrowserConsole" oncommand="HUDService.toggleBrowserConsole();"/>
     <command id="Tools:Scratchpad" oncommand="Scratchpad.openScratchpad();" disabled="true" hidden="true"/>
@@ -168,9 +169,8 @@
     <command id="History:UndoCloseTab" oncommand="undoCloseTab();"/>
     <command id="History:UndoCloseWindow" oncommand="undoCloseWindow();"/>
     <command id="Browser:ToggleAddonBar" oncommand="toggleAddonBar();"/>
-    <command id="Social:TogglePageMark" oncommand="SocialMark.togglePageMark();" disabled="true"/>
     <command id="Social:SharePage" oncommand="SocialShare.sharePage();" disabled="true"/>
-    <command id="Social:ToggleSidebar" oncommand="Social.toggleSidebar();"/>
+    <command id="Social:ToggleSidebar" oncommand="Social.toggleSidebar();" hidden="true"/>
     <command id="Social:ToggleNotifications" oncommand="Social.toggleNotifications();" hidden="true"/>
     <command id="Social:FocusChat" oncommand="SocialChatBar.focus();" hidden="true" disabled="true"/>
     <command id="Social:Toggle" oncommand="Social.toggle();" hidden="true"/>
@@ -236,6 +236,9 @@
                  type="checkbox" autocheck="false"
                  command="Tools:DevToolbar"
                  key="key_devToolbar"/>
+    <broadcaster id="devtoolsMenuBroadcaster_DevAppMgr"
+                 label="&devAppMgrMenu.label;"
+                 command="Tools:DevAppMgr"/>
     <broadcaster id="devtoolsMenuBroadcaster_ChromeDebugger"
                  label="&chromeDebuggerMenu.label;"
                  command="Tools:ChromeDebugger"/>
@@ -349,7 +352,7 @@
     <key id="manBookmarkKb" key="&bookmarksGtkCmd.commandkey;" command="Browser:ShowAllBookmarks" modifiers="accel,shift"/>
     <key id="viewBookmarksSidebarKb" key="&bookmarksCmd.commandkey;" command="viewBookmarksSidebar" modifiers="accel"/>
 
-    <key id="markPage" key="&markPageCmd.commandkey;" command="Social:TogglePageMark" modifiers="accel,shift"/>
+    <!--<key id="markPage" key="&markPageCmd.commandkey;" command="Social:TogglePageMark" modifiers="accel,shift"/>-->
     <key id="focusChatBar" key="&social.chatBar.commandkey;" command="Social:FocusChat" modifiers="accel,shift"/>
 
     <key id="key_stop" keycode="VK_ESCAPE" command="Browser:Stop"/>
@@ -458,6 +461,9 @@
 
     <!-- for url bar autocomplete -->
     <panel type="autocomplete-richlistbox" id="PopupAutoCompleteRichResult" noautofocus="true" hidden="true"/>
+
+    <!-- for select dropdowns -->
+    <menupopup id="ContentSelectDropdown" rolluponmousewheel="true" hidden="true"/>
 
     <!-- for invalid form error message -->
     <panel id="invalid-form-popup" type="arrow" orient="vertical" noautofocus="true" hidden="true" level="parent">
@@ -640,9 +646,6 @@
                 label="&bookmarkThisLinkCmd.label;"
                 accesskey="&bookmarkThisLinkCmd.accesskey;"
                 oncommand="gContextMenu.bookmarkLink();"/>
-      <menuitem id="context-marklink"
-                accesskey="&social.marklink.accesskey;"
-                oncommand="gContextMenu.markLink();"/>
       <menuitem id="context-sharelink"
                 label="&shareLinkCmd.label;"
                 accesskey="&shareLinkCmd.accesskey;"
@@ -651,6 +654,10 @@
                 label="&saveLinkCmd.label;"
                 accesskey="&saveLinkCmd.accesskey;"
                 oncommand="gContextMenu.saveLink();"/>
+      <menu id="context-marklinkMenu" label="&social.marklinkMenu.label;"
+            accesskey="&social.marklinkMenu.accesskey;">
+        <menupopup/>
+      </menu>
       <menuitem id="context-copyemail"
                 label="&copyEmailCmd.label;"
                 accesskey="&copyEmailCmd.accesskey;"
@@ -843,9 +850,6 @@
                 label="&bookmarkPageCmd2.label;"
                 accesskey="&bookmarkPageCmd2.accesskey;"
                 oncommand="gContextMenu.bookmarkThisPage();"/>
-      <menuitem id="context-markpage"
-                accesskey="&social.markpage.accesskey;"
-                command="Social:TogglePageMark"/>
       <menuitem id="context-sharepage"
                 label="&sharePageCmd.label;"
                 accesskey="&sharePageCmd.accesskey;"
@@ -854,6 +858,10 @@
                 label="&savePageCmd.label;"
                 accesskey="&savePageCmd.accesskey2;"
                 oncommand="gContextMenu.savePageAs();"/>
+      <menu id="context-markpageMenu" label="&social.markpageMenu.label;"
+            accesskey="&social.markpageMenu.accesskey;">
+        <menupopup/>
+      </menu>
       <menuseparator id="context-sep-viewbgimage"/>
       <menuitem id="context-viewbgimage"
                 label="&viewBGImageCmd.label;"
@@ -1121,6 +1129,12 @@
         <menulist id="webRTC-selectMicrophone-menulist">
           <menupopup id="webRTC-selectMicrophone-menupopup"/>
         </menulist>
+      </popupnotificationcontent>
+    </popupnotification>
+
+    <popupnotification id="webapps-install-progress-notification" hidden="true">
+      <popupnotificationcontent id="webapps-install-progress-content" orient="vertical" align="start">
+        <separator class="thin"/>
       </popupnotificationcontent>
     </popupnotification>
 
@@ -1754,6 +1768,9 @@
                   <menuitem id="menu_devToolbar"
                             observes="devtoolsMenuBroadcaster_DevToolbar"
                             accesskey="&devToolbarMenu.accesskey;"/>
+                  <menuitem id="menu_devAppMgr"
+                            observes="devtoolsMenuBroadcaster_DevAppMgr"
+                            accesskey="&devAppMgrMenu.accesskey;"/>
                   <menuitem id="menu_chromeDebugger"
                             observes="devtoolsMenuBroadcaster_ChromeDebugger"/>
                   <menuitem id="menu_browserConsole"
@@ -1854,8 +1871,6 @@
             <image id="webapps-notification-icon" class="notification-anchor-icon" role="button"/>
             <image id="plugins-notification-icon" class="notification-anchor-icon" role="button"/>
             <image id="web-notifications-notification-icon" class="notification-anchor-icon" role="button"/>
-            <image id="alert-plugins-notification-icon" class="notification-anchor-icon" role="button"/>
-            <image id="blocked-plugins-notification-icon" class="notification-anchor-icon" role="button"/>
             <image id="plugin-install-notification-icon" class="notification-anchor-icon" role="button"/>
             <image id="mixed-content-blocked-notification-icon" class="notification-anchor-icon" role="button"/>
             <image id="webRTC-shareDevices-notification-icon" class="notification-anchor-icon" role="button"/>
@@ -2082,11 +2097,6 @@
                       oncommand="SocialUI.showLearnMore();"/>
           </menupopup>
         </toolbarbutton>
-        <toolbarbutton id="social-mark-button"
-                       class="toolbarbutton-1"
-                       hidden="true"
-                       disabled="true"
-                       command="Social:TogglePageMark"/>
       </toolbaritem>
 
       <hbox id="window-controls" hidden="true" pack="end">
@@ -2315,6 +2325,8 @@
           <menuseparator id="appmenu_devtools_separator"/>
           <menuitem id="appmenu_devToolbar"
                     observes="devtoolsMenuBroadcaster_DevToolbar"/>
+          <menuitem id="appmenu_devAppMgr"
+                    observes="devtoolsMenuBroadcaster_DevAppMgr"/>
           <menuitem id="appmenu_chromeDebugger"
                     observes="devtoolsMenuBroadcaster_ChromeDebugger"/>
           <menuitem id="appmenu_browserConsole"
@@ -2944,7 +2956,8 @@
                   flex="1" contenttooltip="aHTMLTooltip"
                   tabcontainer="tabbrowser-tabs"
                   contentcontextmenu="contentAreaContextMenu"
-                  autocompletepopup="PopupAutoComplete"/>
+                  autocompletepopup="PopupAutoComplete"
+                  selectpopup="ContentSelectDropdown"/>
       <chatbar id="pinnedchats" layer="true" mousethrough="always" hidden="true"/>
     </vbox>
     <splitter id="social-sidebar-splitter"
